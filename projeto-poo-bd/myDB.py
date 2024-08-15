@@ -29,12 +29,23 @@ class BancoDeDados:
 
     def insertCliente(self, cliente: Cliente):
         try:
-            cursor = self.conn.cursor()
             sql = "INSERT INTO cliente (nome, email) VALUES (%s, %s)"
-            cursor.execute(sql, (cliente.name, cliente.email))
+            self.cursor.execute(sql, (cliente.name, cliente.email))
             self.conn.commit()
             print("Cliente criado com sucesso")
         except mysql.connector.Error as err:
             print(f"Erro ao criar Cliente: {err}")
         finally:
-            cursor.close()
+            self.cursor.close()
+
+    def getAllCliente(self):
+        try:
+            sql = "SELECT * FROM Cliente"
+            self.cursor.execute(sql)
+            records = self.cursor.fetchall()
+            return records
+        except mysql.connector.Error as err:
+            print(f"Erro ao ler a tabela Cliente: {err}")
+        finally:
+            self.cursor.close()
+

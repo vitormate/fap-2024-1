@@ -11,13 +11,14 @@ class BancoDeDados:
             'raise_on_warnings' : True
         }
         self.conn = self.connectToDatabase()
+        self.cursor = self.conn.cursor()
+
 
     def connectToDatabase(self):
         try:
             connection = mysql.connector.connect(**self.config)
-            self.cursor = self.conn.cursor()
-            if connection.is_connected():
-                print("Conexão estabelecida com sucesso.")
+            # if connection.is_connected():
+                # print("Conexão estabelecida com sucesso.")
             return connection
         except mysql.connector.Error as err:
             print(f"Erro ao conectar ao banco de dados: {err}")
@@ -26,11 +27,11 @@ class BancoDeDados:
     def closeConnection(self):
         self.cursor.close()
 
-    def createCliente(self, cliente: Cliente):
+    def insertCliente(self, cliente: Cliente):
         try:
             cursor = self.conn.cursor()
-            sql = f"INSERT INTO cliente (nome, email) VALUES ({cliente.name}, {cliente.email})"
-            cursor.execute(sql)
+            sql = "INSERT INTO cliente (nome, email) VALUES (%s, %s)"
+            cursor.execute(sql, (cliente.name, cliente.email))
             self.conn.commit()
             print("Cliente criado com sucesso")
         except mysql.connector.Error as err:

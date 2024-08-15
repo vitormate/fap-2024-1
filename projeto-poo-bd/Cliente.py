@@ -1,4 +1,8 @@
 class Cliente:
-    def __init__(self, name, email):
+    def __init__(self):
+        self.name = ""
+        self.email = ""
+
+    def createCliente(self, name, email):
         self.name = name
         self.email = email

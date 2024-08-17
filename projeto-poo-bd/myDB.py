@@ -35,17 +35,34 @@ class BancoDeDados:
             print("Cliente criado com sucesso")
         except mysql.connector.Error as err:
             print(f"Erro ao criar Cliente: {err}")
-        finally:
-            self.cursor.close()
 
     def getAllCliente(self):
         try:
-            sql = "SELECT * FROM Cliente"
+            sql = "SELECT * FROM cliente"
             self.cursor.execute(sql)
             records = self.cursor.fetchall()
             return records
         except mysql.connector.Error as err:
             print(f"Erro ao ler a tabela Cliente: {err}")
-        finally:
-            self.cursor.close()
 
+    def updateCliente(self, id, name, email):
+        try:
+            updates = []
+            values = []
+
+            if name:
+                updates.append("nome = %s")
+                values.append(name)
+
+            if email:
+                updates.append("email = %s")
+                values.append(email)
+
+            sql = f"UPDATE cliente SET {', '.join(updates)} WHERE idCliente = %s"
+            values.append(id) 
+            self.cursor.execute(sql, values)
+            self.conn.commit()
+            
+            print("Cliente alterado com sucesso")
+        except mysql.connector.Error as err:
+            print(f"Erro ao alterar a tabela Cliente: {err}")

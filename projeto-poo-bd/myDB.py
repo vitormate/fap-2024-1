@@ -24,9 +24,6 @@ class BancoDeDados:
             print(f"Erro ao conectar ao banco de dados: {err}")
             return None
 
-    def closeConnection(self):
-        self.cursor.close()
-
     def insertCliente(self, cliente: Cliente):
         try:
             sql = "INSERT INTO cliente (nome, email) VALUES (%s, %s)"
@@ -65,4 +62,14 @@ class BancoDeDados:
             
             print("Cliente alterado com sucesso")
         except mysql.connector.Error as err:
-            print(f"Erro ao alterar a tabela Cliente: {err}")
+            print(f"Erro ao alterar o Cliente: {err}")
+
+    def deleteCliente(self, id):
+        try:
+            sql = "DELETE FROM cliente WHERE idCliente = %s"
+            self.cursor.execute(sql, (id,))
+            self.conn.commit()
+
+            print("Cliente deletado com sucesso")
+        except mysql.connector.Error as err:
+            print(f"Erro ao deletar o Cliente: {err}")

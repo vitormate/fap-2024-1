@@ -15,6 +15,7 @@ class Sistema:
         print("1 - Registrar Cliente")
         print("2 - Listar clientes")
         print("3 - Alterar dados de um Cliente")
+        print("4 - Deletar Cliente")
         print("=" * 35)
 
         choice = int(input("\nEscolha uma opção: "))
@@ -26,6 +27,8 @@ class Sistema:
             self.listCliente()
         elif choice == 3:
             self.alterCliente()
+        elif choice == 4:
+            self.deleteCliente()
         else:
             self.endSystem
     
@@ -62,6 +65,12 @@ class Sistema:
 
         self.banco.updateCliente(id, name, email)
 
+    def deleteCliente(self):
+        self.listCliente()
+
+        id = int(input("ID do cliente: "))
+
+        self.banco.deleteCliente(id)
 
     def endSystem(self):
         self.banco.cursor.close()
